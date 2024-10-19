@@ -5,6 +5,7 @@ import com.ot.BoboLike.dto.ResponseStructure;
 import com.ot.BoboLike.dto.request.BookingInitiate;
 import com.ot.BoboLike.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +25,13 @@ public class BookingController {
     public ResponseEntity<ResponseStructure<Booking>> completeBooking(@PathVariable Long bookingId) {
         return bookingService.completeBooking(bookingId);
     }
+    @GetMapping(value = "/findAll")
+    public ResponseEntity<ResponseStructure<Page<Booking>>> findAll(@RequestParam(defaultValue = "0") int offset,
+                                                                    @RequestParam(defaultValue = "5") int pageSize,
+                                                                    @RequestParam(defaultValue = "id") String field) {
+        return bookingService.findAll(offset, pageSize, field);
+    }
+
+
 
 }

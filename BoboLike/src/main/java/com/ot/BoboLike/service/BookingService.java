@@ -9,6 +9,8 @@ import com.ot.BoboLike.repository.DriverRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -119,6 +121,24 @@ public class BookingService {
         } else {
             responseStructure.setStatus(HttpStatus.NOT_FOUND.value());
             responseStructure.setMessage("No data exists to find of admins");
+            responseStructure.setData(null);
+            return new ResponseEntity<>(responseStructure, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
+    public ResponseEntity<ResponseStructure<Page<Booking>>> findBookingsByDriverId(long driverId,int offset, int pageSize, String field) {
+        ResponseStructure<Page<Booking>> responseStructure = new ResponseStructure<>();
+        Page<Booking> bookings = bookingDao.findByDriverId(driverId,offset, pageSize, field);
+        if (!bookings.isEmpty()) {
+            responseStructure.setStatus(HttpStatus.OK.value());
+            responseStructure.setMessage("Bookings found for driver id " + driverId);
+            responseStructure.setData(bookings);
+            return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+        } else {
+            responseStructure.setStatus(HttpStatus.NOT_FOUND.value());
+            responseStructure.setMessage("No bookings found for driver id " + driverId);
             responseStructure.setData(null);
             return new ResponseEntity<>(responseStructure, HttpStatus.NOT_FOUND);
         }

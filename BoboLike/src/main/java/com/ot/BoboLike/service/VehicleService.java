@@ -8,6 +8,7 @@ import com.ot.BoboLike.dto.request.VehicleRegister;
 import com.ot.BoboLike.repository.DriverRepository;
 import com.ot.BoboLike.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,23 @@ public class VehicleService {
             responseStructure.setMessage("Failed to save Vehicle: " + e.getMessage());
             responseStructure.setData(null);
             return new ResponseEntity<>(responseStructure, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public ResponseEntity<ResponseStructure<Page<Vehicle>>> findAll(int offset, int pageSize, String field) {
+        ResponseStructure<Page<Vehicle>> responseStructure = new ResponseStructure<>();
+        Page<Vehicle> vehicles = vehicleDao.findAll(offset, pageSize, field);
+        if (vehicles != null) {
+            responseStructure.setStatus(HttpStatus.OK.value());
+            responseStructure.setMessage("Found all the data of admins ");
+            responseStructure.setData(vehicles);
+            return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+        } else {
+            responseStructure.setStatus(HttpStatus.NOT_FOUND.value());
+            responseStructure.setMessage("No data exists to find of admins");
+            responseStructure.setData(null);
+            return new ResponseEntity<>(responseStructure, HttpStatus.NOT_FOUND);
         }
     }
 

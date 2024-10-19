@@ -49,4 +49,6 @@ public class AdminDao {
     public Admin findByOtp(String otp) {
         return adminRepository.findByOtp(otp);
     }
+
+
 }

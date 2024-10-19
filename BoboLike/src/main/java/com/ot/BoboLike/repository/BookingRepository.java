@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     public Page<Booking> findByDriver(Driver driver, Pageable pageable);
+
+    public Page<Booking> findByDriverId(long driverId,Pageable pageable);
 }

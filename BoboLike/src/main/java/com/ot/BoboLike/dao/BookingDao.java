@@ -7,6 +7,7 @@ import com.ot.BoboLike.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +29,9 @@ public class BookingDao {
 
     public Page<Booking> findAll(int offset, int pageSize, String field) {
         return bookingRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(field).descending()));
+    }
+    public Page<Booking> findByDriverId(long driverId,int offset, int pageSize, String field) {
+        return bookingRepository.findByDriverId(PageRequest.of(offset, pageSize).withSort(Sort.by(field).descending()));
     }
 
 }
